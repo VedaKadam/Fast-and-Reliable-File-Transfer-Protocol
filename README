@@ -2,9 +2,6 @@ README: LAB3: Fast and Reliable file transfer.
 EE542 Internet and Cloud Computing
 Team Members: Veda Shyam Kadam & Sukruth Lokesh Babu
 
-The client server model is based on Linux OS(Ubuntu 16.04). We used VirtualBox for this.
-
-
 Creating a 1000Mb(1Gb) file on the client machine to transfer it to server machine.
 1.Use the command "base64 /dev/urandom | head -c 1000000000 > file.txt". Run this command in the terminal.
 
