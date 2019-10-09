@@ -1,0 +1,54 @@
+README: LAB3: Fast and Reliable file transfer.
+EE542 Internet and Cloud Computing
+Team Members: Veda Shyam Kadam & Sukruth Lokesh Babu
+
+The client server model is based on Linux OS(Ubuntu 16.04). We used VirtualBox for this.
+
+
+Creating a 1000Mb(1Gb) file on the client machine to transfer it to server machine.
+1.Use the command "base64 /dev/urandom | head -c 1000000000 > file.txt". Run this command in the terminal.
+
+Steps for inducing delay and packet loss on the link:
+On the server side :
+1. Run "ip link show", you will get the name of the link.This the devicename used in the following commands.
+2. Run "sudo ethtool -s devicename speed 100 autoneg off". This will make your link a 100Mbps link.
+3. Run "sudo tc qdisc add dev devicename root netem delay 200ms". This is induce 200ms delay on the link.
+4. Run "sudo tc qdisc change dev devicename root netem loss 20%". This will induce a packet loss of 20% on the link.
+
+On the client side :
+1. Run "ip link show", you will get the name of the link. This the devicename used in the following commands.
+2. Run "sudo ethtool -s devicename speed 100 autoneg off". This will make your link a 100Mbps link.
+3. Run "sudo tc qdisc add dev devicename root netem delay 200ms". This is induce 200ms delay on the link.
+4. Run "sudo tc qdisc change dev devicename root netem loss 20%". This will induce a packet loss of 20% on the link.
+
+
+
+How to compile?
+1. On server machine, open terminal to compile server file using the following command:
+gcc -o serverudp serverudp.c -lpthread
+
+2. On client machine, open terminal to compile client file using the following command:
+gcc -o clienttestfor1470 clienttestfor1470.c -lpthread
+
+
+How to Execute?
+1. Run the server program on server machine first with command line:
+./serveudp file.txt
+
+2. Run the client program on client machine:
+./clienttestfor1470 file.txt
+
+3. The client will ask "Please enter the message". Enter a message. For ex: Sending from client machine.
+
+4. The connection will be established with the server. A UDP socket will be created for sending and receiving data on the client and server side. 10 TCP sockets will be created for NACK's. 
+
+5. 10 threads will be created. These threads will be used to transfer the file from the client side to the server side.
+
+4. Check output on both machine. The throughput will be printed on the server machine. We get a throughput of 10.877Mbps.
+
+5. For checking the reliability of the file. Use md5 command.
+
+6. Run "md5sum file.txt" on the client side and the server side. Compare the strings. If they are the same, then the file was reliably transferred from the client side to the server side.
+
+
+
